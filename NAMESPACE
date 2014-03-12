@@ -1,0 +1,11 @@
+useDynLib("arrayfire")
+
+export("afInfo")
+export("afArray")
+export("afPrint")
+export("afRunif")
+export("afRnorm")
+export("afConsts")
+export("afHost")
+
+exportClasses("afArray")

@@ -1,0 +1,12 @@
+Package: arrayfire
+Type: Package
+Title: Test package
+Version: 0.1-0
+Date: 2014-03-11
+Author: Pavan Yalamanchili <pavan@accelereyes.com>
+Maintainer: Pavan Yalamanchili <pavan@accelereyes.com>
+Description: R wrapper for ArrayFire
+License: BSD_3_clause
+Collate:
+        generate.R
+        binary.R        

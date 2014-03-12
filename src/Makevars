@@ -1,0 +1,23 @@
+# Changepath
+AF_PATH?=/opt/arrayfire-2.0
+AFCL?=0
+CUDA_PATH?=/usr/local/cuda
+
+ifeq ($(AFCL), 0)
+     AF_LIB=afcu
+     PKG_CPPFLAGS+=-I$(CUDA_PATH)/include
+else
+     AF_LIB=afcl
+     PKG_CPPFLAGS+=-DAFCL
+endif
+
+ifeq ($(shell uname -m), x86_64)
+  LIB:=lib64
+else
+  LIB:=lib
+endif
+
+PKG_CFLAGS=
+PKG_CPPFLAGS+=-I$(AF_PATH)/include
+PKG_LIBS+=-L$(AF_PATH)/$(LIB) -l$(AF_LIB)
+PKG_LIBS+=-Wl,-rpath,$(AF_PATH)/$(LIB),-rpath,$(abspath $(AF_PATH)/$(LIB))
