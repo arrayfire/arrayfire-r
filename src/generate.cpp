@@ -16,6 +16,14 @@ EXTERNC af_print(SEXP A)
     return (R_NilValue);
 }
 
+EXTERNC af_dims(SEXP A)
+{
+    array *a = getPtr(A);
+    SEXP res = NEW_NUMERIC(a->numdims());
+    for (int i = 0; i < a->numdims(); i++) *RealPtr(res, i) = a->dims(i);
+    return res;
+}
+
 EXTERNC af_host(SEXP A)
 {
     array *a = getPtr(A);
@@ -29,7 +37,6 @@ EXTERNC af_host(SEXP A)
         a->host(ptr);
     } else if (a->type() == c64 ||
                a->type() == c32) {
-
         *a = a->as(f64);
         res = NEW_COMPLEX(a->elements());
         cdouble *ptr = CplxPtr(res, 0);

@@ -31,7 +31,7 @@ afArray <- function(a, type="single") {
     if (atype == "complex" && type == "single") {
         type = "complexFloat"
     }
-         
+
     ty = getTypeID(type)
 
     d = length(a)
@@ -53,7 +53,7 @@ afPrint <- function(A) {
     return (result)
 }
 
-afRunif <- function(dims, min=0, max=1, type="single") {    
+afRunif <- function(dims, min=0, max=1, type="single") {
     if (class(dims) != "numeric") { stop("Dimensions must be numeric") }
     dims <- as.integer(dims)
     arr <- .Call("af_runif", dims, min, max, getTypeID(type))
@@ -79,7 +79,8 @@ afConsts <- function(val, dims, type="single") {
 
 afHost <- function(a) {
     if (class(a) != "afArray") { return (a) }
+    dims <- .Call("af_dims", a@ptr)
     result <- .Call("af_host", a@ptr)
-    result <- array(result, a@dims)
+    result <- array(result, dims)
     return (result)
 }
