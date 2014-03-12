@@ -225,24 +225,24 @@ setMethod("%%", signature(e1="numeric", e2="afArray"), function(e1, e2) {
 
 ## Non symbolic binary operators
 ################################
-setGeneric("cplx", function(real, imag) standardGeneric("cplx"))
+setGeneric("Cplx", function(real, imag) standardGeneric("Cplx"))
 setGeneric("hypot", function(x, y) standardGeneric("hypot"))
 
-setMethod("cplx", signature("afArray", "afArray"),
+setMethod("Cplx", signature("afArray", "afArray"),
           function(real, imag) {
               ret = .Call("af_complex_aa", real@ptr, imag@ptr)
               result <- afArrayWrap(ret)
               return (result)
           })
 
-setMethod("cplx", signature("afArray", "numeric"),
+setMethod("Cplx", signature("afArray", "numeric"),
           function(real, imag=0) {
               ret = .Call("af_complex_an", real@ptr, imag)
               result <- afArrayWrap(ret)
               return (result)
           })
 
-setMethod("cplx", signature("numeric", "afArray"),
+setMethod("Cplx", signature("numeric", "afArray"),
           function(real=0, imag) {
               ret = .Call("af_complex_na", real, imag@ptr)
               result <- afArrayWrap(ret)

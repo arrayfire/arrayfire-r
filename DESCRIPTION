@@ -10,3 +10,4 @@ License: BSD_3_clause
 Collate:
         generate.R
         binary.R        
+        unary.R
