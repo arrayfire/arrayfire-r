@@ -18,8 +18,8 @@ getTypeID <- function(type) {
     return (ty)
 }
 
-afArrayWrap <- function(arr, d) {
-    result <- new("afArray", ptr = arr, dims = d)
+afArrayWrap <- function(arr) {
+    result <- new("afArray", ptr = arr)
     return (result)
 }
 
@@ -40,7 +40,7 @@ afArray <- function(a, type="single") {
     else if (class(a) != "numeric") { stop("Input must be an array or numeric class") }
 
     arr <- .Call("af_array", a, d, ty)
-    result <- afArrayWrap(arr, d)
+    result <- afArrayWrap(arr)
     return (result)
 }
 
@@ -57,7 +57,7 @@ afRunif <- function(dims, min=0, max=1, type="single") {
     if (class(dims) != "numeric") { stop("Dimensions must be numeric") }
     dims <- as.integer(dims)
     arr <- .Call("af_runif", dims, min, max, getTypeID(type))
-    result <- afArrayWrap(arr, dims)
+    result <- afArrayWrap(arr)
     return (result)
 }
 
@@ -65,7 +65,7 @@ afRnorm <- function(dims, mean=0, sd=1, type="single") {
     if (class(dims) != "numeric") { stop("Dimensions must be numeric") }
     dims <- as.integer(dims)
     arr <- .Call("af_rnorm", dims, mean, sd, getTypeID(type))
-    result <- afArrayWrap(arr, dims)
+    result <- afArrayWrap(arr)
     return (result)
 }
 
@@ -73,7 +73,7 @@ afConsts <- function(val, dims, type="single") {
     if (class(dims) != "numeric") { stop("Dimensions must be numeric") }
     dims <- as.integer(dims)
     arr <- .Call("af_consts", val, dims, getTypeID(type))
-    result <- afArrayWrap(arr, dims)
+    result <- afArrayWrap(arr)
     return (result)
 }
 
