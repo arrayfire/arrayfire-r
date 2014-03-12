@@ -9,3 +9,6 @@ export("afConsts")
 export("afHost")
 
 exportClasses("afArray")
+exportMethods("cplx")
+exportMethods("hypot")
+exportMethods("atan2")
