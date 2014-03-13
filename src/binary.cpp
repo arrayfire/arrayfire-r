@@ -5,29 +5,41 @@ using namespace af;
 #define BINARY(fn, op)                          \
     EXTERNC af_##fn##_aa(SEXP A, SEXP B)        \
     {                                           \
-        array *a = getPtr(A);                   \
-        array *b = getPtr(B);                   \
-        array *c = new array();                 \
-        *c = *a op *b;                          \
-        return getSEXP(c);                      \
+        try {                                   \
+            array *a = getPtr(A);               \
+            array *b = getPtr(B);               \
+            array *c = new array();             \
+            *c = *a op *b;                      \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
                                                 \
     EXTERNC af_##fn##_an(SEXP A, SEXP B)        \
     {                                           \
-        array *a = getPtr(A);                   \
-        double b = *RealPtr(B, 0);              \
-        array *c = new array();                 \
-        *c = *a op b;                           \
-        return getSEXP(c);                      \
+        try{                                    \
+            array *a = getPtr(A);               \
+            double b = *RealPtr(B, 0);          \
+            array *c = new array();             \
+            *c = *a op b;                       \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
                                                 \
     EXTERNC af_##fn##_na(SEXP A, SEXP B)        \
     {                                           \
-        double a = *RealPtr(A, 0);              \
-        array *b = getPtr(B);                   \
-        array *c = new array();                 \
-        *c = a op *b;                           \
-        return getSEXP(c);                      \
+        try{                                    \
+            double a = *RealPtr(A, 0);          \
+            array *b = getPtr(B);               \
+            array *c = new array();             \
+            *c = a op *b;                       \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
 
 BINARY(add, +)
@@ -46,29 +58,41 @@ BINARY(ne ,!=)
 #define BINARY(fn)                              \
     EXTERNC af_##fn##_aa(SEXP A, SEXP B)        \
     {                                           \
-        array *a = getPtr(A);                   \
-        array *b = getPtr(B);                   \
-        array *c = new array();                 \
-        *c = fn(*a, *b);                        \
-        return getSEXP(c);                      \
+        try{                                    \
+            array *a = getPtr(A);               \
+            array *b = getPtr(B);               \
+            array *c = new array();             \
+            *c = fn(*a, *b);                    \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
                                                 \
     EXTERNC af_##fn##_an(SEXP A, SEXP B)        \
     {                                           \
-        array *a = getPtr(A);                   \
-        double b = *RealPtr(B, 0);              \
-        array *c = new array();                 \
-        *c = fn(*a, b);                         \
-        return getSEXP(c);                      \
+        try{                                    \
+            array *a = getPtr(A);               \
+            double b = *RealPtr(B, 0);          \
+            array *c = new array();             \
+            *c = fn(*a, b);                     \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
                                                 \
     EXTERNC af_##fn##_na(SEXP A, SEXP B)        \
     {                                           \
-        double a = *RealPtr(A, 0);              \
-        array *b = getPtr(B);                   \
-        array *c = new array();                 \
-        *c = fn(a, *b);                         \
-        return getSEXP(c);                      \
+        try{                                    \
+            double a = *RealPtr(A, 0);          \
+            array *b = getPtr(B);               \
+            array *c = new array();             \
+            *c = fn(a, *b);                     \
+            return getSEXP(c);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
 
 BINARY(atan2)

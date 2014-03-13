@@ -5,10 +5,14 @@ using namespace af;
 #define UNARY(fn)                               \
     EXTERNC af_##fn(SEXP A)                     \
     {                                           \
-        array *a = getPtr(A);                   \
-        array *b = new array();                 \
-        *b = fn(*a);                            \
-        return getSEXP(b);                      \
+        try {                                   \
+            array *a = getPtr(A);               \
+            array *b = new array();             \
+            *b = fn(*a);                        \
+            return getSEXP(b);                  \
+        } catch (af::exception &ae) {           \
+            error_return(ae.what());            \
+        }                                       \
     }                                           \
 
 UNARY(sin)
