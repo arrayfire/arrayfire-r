@@ -71,7 +71,7 @@ afHost <- function(a) {
 ## Utility functions
 #####################
 afInfo <- function() {
-    result <- .Call("info")
+    result <- .Call("af_info_r")
     return (result)
 }
 
@@ -81,5 +81,15 @@ afPrint <- function(A) {
     } else {
         result <- print(A)
     }
+    return (result)
+}
+
+afSync <- function() {
+    result <- .Call("af_sync_r")
+    return (result)
+}
+
+afEval <- function(A) {
+    result <- .Call("af_eval_r", A@ptr)
     return (result)
 }

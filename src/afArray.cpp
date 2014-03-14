@@ -2,10 +2,20 @@
 #include "R_wrapper.h"
 using namespace af;
 
-EXTERNC info()
+EXTERNC af_info_r()
 {
     try {
         af::info();
+        return (R_NilValue);
+    } catch (af::exception &ae) {
+        error_return(ae.what());
+    }
+}
+
+EXTERNC af_sync_r()
+{
+    try {
+        af::sync();
         return (R_NilValue);
     } catch (af::exception &ae) {
         error_return(ae.what());

@@ -7,6 +7,8 @@ export("afRunif")
 export("afRnorm")
 export("afConsts")
 export("afHost")
+export("afEval")
+export("afSync")
 
 exportClasses("afArray")
 exportMethods("Cplx")
