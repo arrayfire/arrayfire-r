@@ -86,6 +86,8 @@ EXTERNC af_array(SEXP data, SEXP _dims, SEXP _type)
             a = new array(dims, RealPtr(data, 0));
         }
 
+        *a = (*a).as(ty);
+
         SEXP res = getSEXP(a);
         return res;
     } catch(af::exception &ae) {
