@@ -12,3 +12,4 @@ Collate:
         binary.R        
         unary.R
         stats.R
+        index.R
