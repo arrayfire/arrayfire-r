@@ -13,11 +13,6 @@ getTypeID <- function(type) {
     return (ty)
 }
 
-afArrayWrap <- function(arr) {
-    result <- new("afArray", ptr = arr)
-    return (result)
-}
-
 afArray <- function(a, type="single") {
     atype = typeof(a)
     if (atype != "double" &&
