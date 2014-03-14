@@ -11,4 +11,4 @@ Collate:
         generate.R
         binary.R        
         unary.R
-        core.R
+        stats.R
