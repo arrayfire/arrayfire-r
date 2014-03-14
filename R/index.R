@@ -14,14 +14,13 @@ setMethod("[", signature(x="afArray", i="afArray", j="afArray"),
               indices <- getIndices(...)
 
               if (missing(i)) {
-                  ret =.Call("af_get_sass", x@ptr, 0, j, 0, 0)
+                  ret =.Call("af_get_sass", x@ptr, 0, j@ptr, 0, 0)
               }
 
               if (missing(j)) {
-                  ret =.Call("af_get_asss", x@ptr, i, 0, 0, 0)
+                  ret =.Call("af_get_asss", x@ptr, i@ptr, 0, 0, 0)
               }
-
-              ret = .Call("af_get_aass", x@ptr, i, j, 0, 0)
+              ret = .Call("af_get_aass", x@ptr, i@ptr, j@ptr, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
@@ -31,7 +30,7 @@ setMethod("[", signature(x="afArray", i="numeric", j="afArray"),
               indices <- getIndices(...)
 
               if (missing(i)) {
-                  ret =.Call("af_get_sass", x@ptr, 0, j, 0, 0)
+                  ret =.Call("af_get_sass", x@ptr, 0, j@ptr, 0, 0)
               } else {
                   i = as.integer(i)
               }
@@ -40,7 +39,7 @@ setMethod("[", signature(x="afArray", i="numeric", j="afArray"),
                   ret =.Call("af_get_nsss", x@ptr, i, 0, 0, 0)
               }
 
-              ret = .Call("af_get_nass", x@ptr, i, j, 0, 0)
+              ret = .Call("af_get_nass", x@ptr, i, j@ptr, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
@@ -50,7 +49,7 @@ setMethod("[", signature(x="afArray", i="afArray", j="numeric"),
               indices <- getIndices(...)
 
               if (missing(j)) {
-                  ret =.Call("af_get_asss", x@ptr, i, 0, 0, 0)
+                  ret =.Call("af_get_asss", x@ptr, i@ptr, 0, 0, 0)
               } else {
                   j = as.integer(j)
               }
@@ -59,7 +58,7 @@ setMethod("[", signature(x="afArray", i="afArray", j="numeric"),
                   ret =.Call("af_get_snss", x@ptr, 0, j, 0, 0)
               }
 
-              ret = .Call("af_get_anss", x@ptr, i, j, 0, 0)
+              ret = .Call("af_get_anss", x@ptr, i@ptr, j, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
@@ -89,14 +88,14 @@ setMethod("[<-", signature(x="afArray", i="afArray", j="afArray"),
               if (class(value) != "afArray") { stop ("value parameter must be afArray") }
 
               if (missing(i)) {
-                  ret =.Call("af_set_sass", x@ptr, value@ptr, 0, j, 0, 0)
+                  ret =.Call("af_set_sass", x@ptr, value@ptr, 0, j@ptr, 0, 0)
               }
 
               if (missing(j)) {
-                  ret =.Call("af_set_asss", x@ptr, value@ptr, i, 0, 0, 0)
+                  ret =.Call("af_set_asss", x@ptr, value@ptr, i@pr, 0, 0, 0)
               }
 
-              ret = .Call("af_set_aass", x@ptr, value@ptr, i, j, 0, 0)
+              ret = .Call("af_set_aass", x@ptr, value@ptr, i@ptr, j@ptr, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
@@ -107,7 +106,7 @@ setMethod("[<-", signature(x="afArray", i="numeric", j="afArray"),
               if (class(value) != "afArray") { stop ("value parameter must be afArray") }
 
               if (missing(i)) {
-                  ret =.Call("af_set_sass", x@ptr, value@ptr, 0, j, 0, 0)
+                  ret =.Call("af_set_sass", x@ptr, value@ptr, 0, j@ptr, 0, 0)
               } else {
                   i = as.integer(i)
               }
@@ -116,7 +115,7 @@ setMethod("[<-", signature(x="afArray", i="numeric", j="afArray"),
                   ret =.Call("af_set_nsss", x@ptr, value@ptr, i, 0, 0, 0)
               }
 
-              ret = .Call("af_set_nass", x@ptr, value@ptr, i, j, 0, 0)
+              ret = .Call("af_set_nass", x@ptr, value@ptr, i, j@ptr, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
@@ -127,7 +126,7 @@ setMethod("[<-", signature(x="afArray", i="afArray", j="numeric"),
               if (class(value) != "afArray") { stop ("value parameter must be afArray") }
 
               if (missing(j)) {
-                  ret =.Call("af_set_asss", x@ptr, value@ptr, i, 0, 0, 0)
+                  ret =.Call("af_set_asss", x@ptr, value@ptr, i@ptr, 0, 0, 0)
               } else {
                   j = as.integer(j)
               }
@@ -136,7 +135,7 @@ setMethod("[<-", signature(x="afArray", i="afArray", j="numeric"),
                   ret =.Call("af_set_snss", x@ptr, value@ptr, 0, j, 0, 0)
               }
 
-              ret = .Call("af_set_anss", x@ptr, value@ptr, i, j, 0, 0)
+              ret = .Call("af_set_anss", x@ptr, value@ptr, i@ptr, j, 0, 0)
               result = new("afArray", ptr=ret)
               return (result)
           })
