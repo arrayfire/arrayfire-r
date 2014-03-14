@@ -8,7 +8,7 @@ Maintainer: Pavan Yalamanchili <pavan@accelereyes.com>
 Description: R wrapper for ArrayFire
 License: BSD_3_clause
 Collate:
-        generate.R
+        afArray.R
         binary.R        
         unary.R
         stats.R
