@@ -1,5 +1,4 @@
 library(methods)
-library(parallel)
 library(arrayfire)
 
 piR <- function(num) {
@@ -34,29 +33,29 @@ piBench <- function(num, iter, fn, sync=FALSE) {
         afSync()
     }
     end <- Sys.time()
-    elapsed <- difftime(end, start)
+    elapsed <- difftime(end, start) / iter
     return (elapsed)
 }
 
 num = 10000000
-print("R (Double precision) Result: ")
+print("CPU (Double precision) Result: ")
 res = piR(num)
 print(res)
 
-print("AF Single precision Result: ")
+print("ArrayFire (Single precision) Result: ")
 res = piAF(num)
 afPrint(res)
 
-print("AF Double precision Result: ")
+print("ArrayFire (Double precision) Result: ")
 res = piAFDouble(num)
 afPrint(res)
 
-print("R (Double precision) time: ")
+print("CPU (Double precision) time: ")
 piBench(num, 5, piR)
 
-print("AF Single precision time: ")
+print("ArrayFire (Single precision) time: ")
 piBench(num, 5, piAF, TRUE)
 
-print("AF Double precision time: ")
+print("ArrayFire (Double precision) time: ")
 piBench(num, 5, piAFDouble, TRUE)
 
