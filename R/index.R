@@ -21,7 +21,7 @@ setMethod("[", signature(x="afArray", i="afArray", j="afArray"),
                   ret =.Call("af_get_asss", x@ptr, i@ptr, 0, 0, 0)
               }
               ret = .Call("af_get_aass", x@ptr, i@ptr, j@ptr, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -40,7 +40,7 @@ setMethod("[", signature(x="afArray", i="numeric", j="afArray"),
               }
 
               ret = .Call("af_get_nass", x@ptr, i, j@ptr, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -59,7 +59,7 @@ setMethod("[", signature(x="afArray", i="afArray", j="numeric"),
               }
 
               ret = .Call("af_get_anss", x@ptr, i@ptr, j, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -78,7 +78,7 @@ setMethod("[", signature(x="afArray", i="ANY", j="ANY"),
                   ret = .Call("af_get_nnss", x@ptr, i, j, 0, 0)
               }
 
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -96,7 +96,7 @@ setMethod("[<-", signature(x="afArray", i="afArray", j="afArray"),
               }
 
               ret = .Call("af_set_aass", x@ptr, value@ptr, i@ptr, j@ptr, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -116,7 +116,7 @@ setMethod("[<-", signature(x="afArray", i="numeric", j="afArray"),
               }
 
               ret = .Call("af_set_nass", x@ptr, value@ptr, i, j@ptr, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -136,7 +136,7 @@ setMethod("[<-", signature(x="afArray", i="afArray", j="numeric"),
               }
 
               ret = .Call("af_set_anss", x@ptr, value@ptr, i@ptr, j, 0, 0)
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })
 
@@ -156,6 +156,6 @@ setMethod("[<-", signature(x="afArray", i="ANY", j="ANY"),
                   ret = .Call("af_set_nnss", x@ptr, value@ptr, i, j, 0, 0)
               }
 
-              result = new("afArray", ptr=ret)
+              result = createArray(ret)
               return (result)
           })

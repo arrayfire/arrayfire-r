@@ -6,7 +6,7 @@ static void af_destroy(SEXP A)
 {
     try {
         array *a = getPtr(A);
-        delete[] a;
+        if (a != NULL) delete a;
         return;
     } catch(af::exception &ae) {
     }
@@ -15,7 +15,7 @@ static void af_destroy(SEXP A)
 SEXP getSEXP(array *ptr)
 {
     SEXP res = R_MakeExternalPtr(ptr, R_NilValue, R_NilValue);
-    //R_RegisterCFinalizerEx(res, af_destroy, TRUE);
+    R_RegisterCFinalizerEx(res, af_destroy, TRUE);
     return res;
 }
 
