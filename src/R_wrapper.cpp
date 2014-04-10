@@ -2,27 +2,27 @@
 #include "R_wrapper.h"
 using namespace af;
 
+static void af_destroy(SEXP A)
+{
+    try {
+        array *a = getPtr(A);
+        delete[] a;
+        return;
+    } catch(af::exception &ae) {
+    }
+}
+
 SEXP getSEXP(array *ptr)
 {
-    SEXP res;
-    res = NEW_INTEGER(2);
-    int2ptr p;
-    p.v[0] = 0;
-    p.v[1] = 0;
-    p.ptr = (void *)ptr;
-
-    *IntPtr(res, 0) = p.v[0];
-    *IntPtr(res, 1) = p.v[1];
-
+    SEXP res = R_MakeExternalPtr(ptr, R_NilValue, R_NilValue);
+    //R_RegisterCFinalizerEx(res, af_destroy, TRUE);
     return res;
 }
 
 array *getPtr(SEXP S)
 {
-    int2ptr p;
-    p.v[0] = *IntPtr(S, 0);
-    p.v[1] = *IntPtr(S, 1);
-    return (array *)p.ptr;
+    array *ptr = (array *)(R_ExternalPtrAddr(S));
+    return ptr;
 }
 
 dim4 getDims(SEXP _dims)

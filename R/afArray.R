@@ -1,4 +1,4 @@
-setClass("afArray", representation(ptr = "numeric"))
+setClass("afArray", representation(ptr = "externalptr"))
 
 getTypeID <- function(type) {
     ty = -1
