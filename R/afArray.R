@@ -1,4 +1,4 @@
-setClass("afArray", representation(ptr = "numeric", dims = "numeric"))
+setClass("afArray", representation(ptr = "numeric"))
 
 getTypeID <- function(type) {
     ty = -1
