@@ -77,25 +77,21 @@ afHost <- function(a) {
 ## Utility functions
 #####################
 afInfo <- function() {
-    result <- .Call("af_info_r")
-    return (result)
+    invisible(.Call("af_info_r"))
 }
 
 afPrint <- function(A) {
     if (class(A) == "afArray") {
-        result <- .Call("af_print", A@ptr)
+        invisible(.Call("af_print", A@ptr))
     } else {
-        result <- print(A)
+        print(A)
     }
-    return (result)
 }
 
 afSync <- function() {
-    result <- .Call("af_sync_r")
-    return (result)
+    invisible(.Call("af_sync_r"))
 }
 
 afEval <- function(A) {
-    result <- .Call("af_eval_r", A@ptr)
-    return (result)
+    invisible(.Call("af_eval_r", A@ptr))
 }
