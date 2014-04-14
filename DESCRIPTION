@@ -11,5 +11,5 @@ Collate:
         afArray.R
         binary.R        
         unary.R
-        stats.R
+        reduce.R
         index.R
