@@ -27,7 +27,6 @@ REDUCE(max)
 REDUCE(min)
 REDUCE(mean)
 REDUCE(median)
-REDUCE(stdev)
 
 #undef REDUCE
 

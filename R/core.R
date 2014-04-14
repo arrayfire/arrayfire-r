@@ -36,22 +36,7 @@ setMethod("max", signature(x="afArray", na.rm="logical"),
               return (result)
           })
 
-setMethod("median", signature(x="afArray", na.rm="logical"),
-          function(x, na.rm=0) {
-              ret = .Call("af_median", x@ptr, -1)
-              result <- createArray(ret)
-              return (result)
-          })
-
-setMethod("sd", signature(x="afArray", na.rm="logical"),
-          function(x, na.rm=0) {
-              ret = .Call("af_stdev", x@ptr, -1)
-              result <- createArray(ret)
-              return (result)
-          })
-
 setGeneric("mean", function(x) standardGeneric("mean"))
-
 setMethod("mean", signature(x="afArray"),
           function(x) {
               ret = .Call("af_mean", x@ptr, -1)
@@ -59,28 +44,27 @@ setMethod("mean", signature(x="afArray"),
               return (result)
           })
 
-## Reduce along dimension
-#########################
-setGeneric("dimSum", function(x, dim) standardGeneric("dimSum"))
-setGeneric("dimMean", function(x, dim) standardGeneric("dimMean"))
-setGeneric("dimMin", function(x, dim) standardGeneric("dimMin"))
-setGeneric("dimMax", function(x, dim) standardGeneric("dimMax"))
-setGeneric("dimAny", function(x, dim) standardGeneric("dimAny"))
-setGeneric("dimAll", function(x, dim) standardGeneric("dimAll"))
-setGeneric("dimSd", function(x, dim) standardGeneric("dimSd"))
-setGeneric("dimMedian", function(x, dim) standardGeneric("dimMedian"))
-
-
-setMethod("dimSum", signature(x="afArray", dim="numeric"),
-          function(x, dim=1) {
-              ret = .Call("af_sum", x@ptr, dim-1)
+setGeneric("median", function(x) standardGeneric("median"))
+setMethod("median", signature(x="afArray"),
+          function(x) {
+              ret = .Call("af_median", x@ptr, -1)
               result <- createArray(ret)
               return (result)
           })
 
-setMethod("dimMean", signature(x="afArray", dim="numeric"),
+## Reduce along dimension
+#########################
+setGeneric("dimSum", function(x, dim) standardGeneric("dimSum"))
+setGeneric("dimMin", function(x, dim) standardGeneric("dimMin"))
+setGeneric("dimMax", function(x, dim) standardGeneric("dimMax"))
+setGeneric("dimAny", function(x, dim) standardGeneric("dimAny"))
+setGeneric("dimAll", function(x, dim) standardGeneric("dimAll"))
+setGeneric("dimMean", function(x, dim) standardGeneric("dimMean"))
+setGeneric("dimMedian", function(x, dim) standardGeneric("dimMedian"))
+
+setMethod("dimSum", signature(x="afArray", dim="numeric"),
           function(x, dim=1) {
-              ret = .Call("af_mean", x@ptr, dim-1)
+              ret = .Call("af_sum", x@ptr, dim-1)
               result <- createArray(ret)
               return (result)
           })
@@ -113,9 +97,9 @@ setMethod("dimAll", signature(x="afArray", dim="numeric"),
               return (result)
           })
 
-setMethod("dimSd", signature(x="afArray", dim="numeric"),
+setMethod("dimMean", signature(x="afArray", dim="numeric"),
           function(x, dim=1) {
-              ret = .Call("af_sd", x@ptr, dim-1)
+              ret = .Call("af_mean", x@ptr, dim-1)
               result <- createArray(ret)
               return (result)
           })
