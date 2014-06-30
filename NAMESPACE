@@ -32,3 +32,5 @@ exportMethods("dimMedian")
 
 exportMethods("cov")
 exportMethods("var")
+
+exportMethods("afKNN1")

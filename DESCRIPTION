@@ -9,8 +9,9 @@ Description: R wrapper for ArrayFire
 License: BSD_3_clause
 Collate:
         afArray.R
-        binary.R        
+        binary.R
         unary.R
         core.R
         index.R
         stats.R
+        classify.R

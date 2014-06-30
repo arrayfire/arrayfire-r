@@ -3,6 +3,7 @@
 
 #include <R.h>
 #include <Rdefines.h>
+#undef eval // defined in Rinternals.h
 #include <arrayfire.h>
 #include <af/utils.h>
 
@@ -13,12 +14,6 @@
 #define IntPtr(x, idx) (INTEGER(x) + idx)
 #define RealPtr(x, idx) (REAL(x) + idx)
 #define CplxPtr(x, idx) (cdouble *)(COMPLEX(x) + idx)
-
-
-typedef union {
-    int v[2];
-    void *ptr;
-} int2ptr;
 
 af::array *getPtr(SEXP S);
 af::dim4 getDims(SEXP _dims);
