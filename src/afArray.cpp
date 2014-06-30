@@ -46,6 +46,30 @@ EXTERNC af_dims(SEXP A)
     }
 }
 
+EXTERNC af_dims_strip(SEXP A)
+{
+    try {
+        array *a = getPtr(A);
+
+        int strip = 0;
+        for (int i = a->numdims() - 1; i >= 1; i--) {
+            if (a->dims(i) == 1) strip++;
+            else break;
+        }
+
+        int numdims = a->numdims() - strip;
+
+        SEXP res = NEW_NUMERIC(numdims);
+
+        for (int i = 0; i < numdims; i++)
+            *RealPtr(res, i) = a->dims(i);
+
+        return res;
+    } catch (af::exception &ae) {
+        error_return(ae.what());
+    }
+}
+
 EXTERNC af_host(SEXP A)
 {
     try {

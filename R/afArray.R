@@ -66,9 +66,13 @@ afConsts <- function(val, dims, type="single") {
     return (result)
 }
 
-afHost <- function(a) {
+afHost <- function(a, strip=TRUE) {
     if (class(a) != "afArray") { return (a) }
-    dims <- .Call("af_dims", a@ptr)
+    if (strip) {
+        dims <- .Call("af_dims_strip", a@ptr)
+    } else {
+        dims <- .Call("af_dims", a@ptr)
+    }
     result <- .Call("af_host", a@ptr)
     result <- array(result, dims)
     return (result)
