@@ -6,7 +6,7 @@ This repository contains the files required to use ArrayFire from R.
 Prerequisites
 ---------------
 
-- The latest version of ArrayFire. You can [download here](http://www.arrayfire.com/docs/installation.htm)
+- Clone and build [ArrayFire](https://github.com/arrayfire/arrayfire)
     - All the pre-requisites for ArrayFire still apply.
 
 - **make**
@@ -26,7 +26,7 @@ Usage
 
 After you the necessary pre-requisites, edit the following paramets
 
-- Open **src/Makevars** and change **AF_PATH** and **CUDA_PATH** to the right location
+- Open **src/Makevars** and change **AF_PATH** to the right location
 - Change **AFCL** to 1 if you are using OpenCL
 
 ### Linux
