@@ -3,7 +3,7 @@
 using namespace af;
 
 #define BINARY(fn, op)                          \
-    EXTERNC af_##fn##_aa(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_aa(SEXP A, SEXP B)        \
     {                                           \
         try {                                   \
             array *a = getPtr(A);               \
@@ -16,7 +16,7 @@ using namespace af;
         }                                       \
     }                                           \
                                                 \
-    EXTERNC af_##fn##_an(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_an(SEXP A, SEXP B)        \
     {                                           \
         try{                                    \
             array *a = getPtr(A);               \
@@ -29,7 +29,7 @@ using namespace af;
         }                                       \
     }                                           \
                                                 \
-    EXTERNC af_##fn##_na(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_na(SEXP A, SEXP B)        \
     {                                           \
         try{                                    \
             double a = *RealPtr(A, 0);          \
@@ -56,7 +56,7 @@ BINARY(ne ,!=)
 #undef BINARY
 
 #define BINARY(fn)                              \
-    EXTERNC af_##fn##_aa(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_aa(SEXP A, SEXP B)        \
     {                                           \
         try{                                    \
             array *a = getPtr(A);               \
@@ -69,7 +69,7 @@ BINARY(ne ,!=)
         }                                       \
     }                                           \
                                                 \
-    EXTERNC af_##fn##_an(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_an(SEXP A, SEXP B)        \
     {                                           \
         try{                                    \
             array *a = getPtr(A);               \
@@ -82,7 +82,7 @@ BINARY(ne ,!=)
         }                                       \
     }                                           \
                                                 \
-    EXTERNC af_##fn##_na(SEXP A, SEXP B)        \
+    EXTERNC afr_##fn##_na(SEXP A, SEXP B)        \
     {                                           \
         try{                                    \
             double a = *RealPtr(A, 0);          \

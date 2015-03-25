@@ -2,7 +2,7 @@
 #include "R_wrapper.h"
 using namespace af;
 
-static void af_destroy(SEXP A)
+static void afr_destroy(SEXP A)
 {
     try {
         array *a = getPtr(A);
@@ -15,7 +15,7 @@ static void af_destroy(SEXP A)
 SEXP getSEXP(array *ptr)
 {
     SEXP res = R_MakeExternalPtr(ptr, R_NilValue, R_NilValue);
-    R_RegisterCFinalizerEx(res, af_destroy, TRUE);
+    R_RegisterCFinalizerEx(res, afr_destroy, TRUE);
     return res;
 }
 

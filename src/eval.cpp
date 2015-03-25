@@ -6,7 +6,7 @@
 using namespace af;
 af::array *getPtr(SEXP S);
 
-extern "C" SEXP af_eval_r(SEXP A)
+extern "C" SEXP afr_eval(SEXP A)
 {
     try {
         array *a = getPtr(A);

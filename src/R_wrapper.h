@@ -5,7 +5,7 @@
 #include <Rdefines.h>
 #undef eval // defined in Rinternals.h
 #include <arrayfire.h>
-#include <af/utils.h>
+#include <af/util.h>
 
 #ifdef __cplusplus
 #define EXTERNC extern "C" SEXP

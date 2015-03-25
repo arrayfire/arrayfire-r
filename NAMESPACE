@@ -15,8 +15,6 @@ exportMethods("Cplx")
 exportMethods("hypot")
 exportMethods("erf")
 exportMethods("erfc")
-exportMethods("erfinv")
-exportMethods("gammaln")
 
 exportMethods("mean")
 exportMethods("median")
