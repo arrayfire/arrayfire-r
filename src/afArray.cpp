@@ -2,6 +2,7 @@
 #include "R_wrapper.h"
 using namespace af;
 
+
 EXTERNC afr_info()
 {
     try {
@@ -21,6 +22,34 @@ EXTERNC afr_sync()
         error_return(ae.what());
     }
 }
+
+EXTERNC afr_mem_info()
+{
+    try {
+        SEXP result = PROTECT(allocVector(REALSXP, 4));
+        size_t alloc_bytes;
+        size_t alloc_buffers;
+        size_t lock_bytes;
+        size_t lock_buffers;
+
+        deviceMemInfo(&alloc_bytes,
+                      &alloc_buffers,
+                      &lock_bytes,
+                      &lock_buffers);
+
+        REAL(result)[0] = (double)alloc_bytes;
+        REAL(result)[1] = (double)alloc_buffers;
+        REAL(result)[2] = (double)lock_bytes;
+        REAL(result)[3] = (double)lock_buffers;
+
+        UNPROTECT(1);
+
+        return result;
+    } catch (af::exception &ae) {
+        error_return(ae.what());
+    }
+}
+
 
 EXTERNC afr_print(SEXP A)
 {

@@ -1,8 +1,17 @@
 setClass("afArray", representation(ptr = "externalptr"))
 
+# Hack to clean up GPU memory once in a while
+afgc <- function(flag=FALSE) {
+    memInfo <- .Call("afr_mem_info");
+    if (flag || memInfo[3] > 1000 * 1000 * 1000 || memInfo[4] > 50) {
+        invisible(gc());
+        memInfo <- .Call("afr_mem_info");
+    }
+}
+
 createArray <- function(p) {
     result <- new("afArray", ptr=p)
-    invisible(gc())
+    invisible(afgc(FALSE))
     return (result)
 }
 
