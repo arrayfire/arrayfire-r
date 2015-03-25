@@ -2,14 +2,7 @@
 #include "R_wrapper.h"
 using namespace af;
 
-
-/// Specify which address-space pointer belongs
-typedef enum {
-    afDevice, ///< Device-memory pointer
-    afHost    ///< Host-memory pointer
-} af_source_t;
-
-EXTERNC af_get_nnss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_nnss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j is numeric array
@@ -36,7 +29,7 @@ EXTERNC af_get_nnss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_aass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_aass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j is arrayfire array
@@ -49,7 +42,7 @@ EXTERNC af_get_aass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_anss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_anss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j is numeric array
@@ -69,7 +62,7 @@ EXTERNC af_get_anss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_nass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_nass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j is arrayfire array
@@ -89,7 +82,7 @@ EXTERNC af_get_nass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_sass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_sass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // j is arrayfire array
     // i, k,l are spans and can be ignored
@@ -100,7 +93,7 @@ EXTERNC af_get_sass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_asss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_asss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j, k,l are spans and can be ignored
@@ -112,7 +105,7 @@ EXTERNC af_get_asss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 }
 
 
-EXTERNC af_get_snss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_snss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // j is numeric array
     // i, k,l are spans and can be ignored
@@ -129,7 +122,7 @@ EXTERNC af_get_snss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_get_nsss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_get_nsss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j, k,l are spans and can be ignored
@@ -146,7 +139,7 @@ EXTERNC af_get_nsss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_nnss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_nnss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j is numeric array
@@ -174,7 +167,7 @@ EXTERNC af_set_nnss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_aass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_aass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j is arrayfire array
@@ -188,7 +181,7 @@ EXTERNC af_set_aass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_anss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_anss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j is numeric array
@@ -207,7 +200,7 @@ EXTERNC af_set_anss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_nass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_nass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j is arrayfire array
@@ -227,7 +220,7 @@ EXTERNC af_set_nass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_sass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_sass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // j is arrayfire array
     // i, k,l are spans and can be ignored
@@ -239,7 +232,7 @@ EXTERNC af_set_sass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_asss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_asss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is arrayfire array
     // j, k,l are spans and can be ignored
@@ -252,7 +245,7 @@ EXTERNC af_set_asss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 }
 
 
-EXTERNC af_set_snss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_snss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // j is numeric array
     // i, k,l are spans and can be ignored
@@ -269,7 +262,7 @@ EXTERNC af_set_snss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
     return getSEXP(res);
 }
 
-EXTERNC af_set_nsss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
+EXTERNC afr_set_nsss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
 {
     // i is numeric array
     // j, k,l are spans and can be ignored

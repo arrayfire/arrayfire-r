@@ -3,7 +3,7 @@
 using namespace af;
 
 #define REDUCE(fn)                              \
-    EXTERNC af_##fn(SEXP A, SEXP _dim)          \
+    EXTERNC afr_##fn(SEXP A, SEXP _dim)          \
     {                                           \
         try {                                   \
             array *a = getPtr(A);               \
@@ -20,7 +20,6 @@ using namespace af;
     }                                           \
 
 REDUCE(sum)
-REDUCE(mul)
 REDUCE(anytrue)
 REDUCE(alltrue)
 REDUCE(max)
@@ -30,21 +29,20 @@ REDUCE(median)
 
 #undef REDUCE
 
-EXTERNC af_accum(SEXP A, SEXP _dim, SEXP _OP)
+EXTERNC afr_accum(SEXP A, SEXP _dim)
 {
     try {
         array *a = getPtr(A);
         int dim = (int)*RealPtr(_dim, 0);
-        int op  = (int)*RealPtr(_OP, 0);
         array *b = new array();
-        *b = accum(*a, dim, (af_op_t)op);
+        *b = accum(*a, dim);
         return getSEXP(b);
     } catch (af::exception &ae) {
         error_return(ae.what());
     }
 }
 
-EXTERNC af_where(SEXP A)
+EXTERNC afr_where(SEXP A)
 {
     try {
         array *a = getPtr(A);
@@ -56,7 +54,7 @@ EXTERNC af_where(SEXP A)
     }
 }
 
-EXTERNC af_count(SEXP A)
+EXTERNC afr_count(SEXP A)
 {
     try {
         array *a = getPtr(A);

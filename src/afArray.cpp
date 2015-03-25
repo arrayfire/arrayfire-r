@@ -2,7 +2,7 @@
 #include "R_wrapper.h"
 using namespace af;
 
-EXTERNC af_info_r()
+EXTERNC afr_info()
 {
     try {
         af::info();
@@ -12,7 +12,7 @@ EXTERNC af_info_r()
     }
 }
 
-EXTERNC af_sync_r()
+EXTERNC afr_sync()
 {
     try {
         af::sync();
@@ -22,18 +22,18 @@ EXTERNC af_sync_r()
     }
 }
 
-EXTERNC af_print(SEXP A)
+EXTERNC afr_print(SEXP A)
 {
     try {
         array *a = getPtr(A);
-        _print("afArray", *a);
+        af::print("afArray", *a);
         return (R_NilValue);
     } catch (af::exception &ae) {
         error_return(ae.what());
     }
 }
 
-EXTERNC af_dims(SEXP A)
+EXTERNC afr_dims(SEXP A)
 {
     try {
         array *a = getPtr(A);
@@ -46,7 +46,7 @@ EXTERNC af_dims(SEXP A)
     }
 }
 
-EXTERNC af_dims_strip(SEXP A)
+EXTERNC afr_dims_strip(SEXP A)
 {
     try {
         array *a = getPtr(A);
@@ -70,7 +70,7 @@ EXTERNC af_dims_strip(SEXP A)
     }
 }
 
-EXTERNC af_host(SEXP A)
+EXTERNC afr_host(SEXP A)
 {
     try {
         array *a = getPtr(A);
@@ -104,7 +104,7 @@ EXTERNC af_host(SEXP A)
     }
 }
 
-EXTERNC af_array(SEXP data, SEXP _dims, SEXP _type)
+EXTERNC afr_array(SEXP data, SEXP _dims, SEXP _type)
 {
     try {
         dtype ty = (dtype)*(IntPtr(_type, 0));
@@ -129,7 +129,7 @@ EXTERNC af_array(SEXP data, SEXP _dims, SEXP _type)
     }
 }
 
-EXTERNC af_runif(SEXP _dims, SEXP _mn, SEXP _mx, SEXP _type)
+EXTERNC afr_runif(SEXP _dims, SEXP _mn, SEXP _mx, SEXP _type)
 {
     try {
         dtype ty = (dtype)*(IntPtr(_type, 0));
@@ -145,7 +145,7 @@ EXTERNC af_runif(SEXP _dims, SEXP _mn, SEXP _mx, SEXP _type)
     }
 }
 
-EXTERNC af_rnorm(SEXP _dims, SEXP _mean, SEXP _sd, SEXP _type)
+EXTERNC afr_rnorm(SEXP _dims, SEXP _mean, SEXP _sd, SEXP _type)
 {
     try {
         dtype ty = (dtype)*(IntPtr(_type, 0));
@@ -161,7 +161,7 @@ EXTERNC af_rnorm(SEXP _dims, SEXP _mean, SEXP _sd, SEXP _type)
     }
 }
 
-EXTERNC af_consts(SEXP _val, SEXP _dims,  SEXP _type)
+EXTERNC afr_consts(SEXP _val, SEXP _dims,  SEXP _type)
 {
     try {
         dtype ty = (dtype)*(IntPtr(_type, 0));

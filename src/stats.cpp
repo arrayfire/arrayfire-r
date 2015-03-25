@@ -3,7 +3,7 @@
 using namespace af;
 
 #define REDUCE(fn)                              \
-    EXTERNC af_##fn(SEXP A)                     \
+    EXTERNC afr_##fn(SEXP A)                     \
     {                                           \
         try {                                   \
             array *a = getPtr(A);               \
@@ -16,12 +16,11 @@ using namespace af;
     }                                           \
 
 REDUCE(stdev)
-REDUCE(cov)
 REDUCE(var)
 #undef REDUCE
 
 #define REDUCE(fn)                              \
-    EXTERNC af_##fn##2(SEXP A, SEXP B)          \
+    EXTERNC afr_##fn##2(SEXP A, SEXP B)         \
     {                                           \
         try {                                   \
             array *a = getPtr(A);               \
@@ -35,4 +34,3 @@ REDUCE(var)
     }                                           \
 
 REDUCE(cov)
-REDUCE(var)

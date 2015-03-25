@@ -41,7 +41,7 @@ array knn1(array &train_feats, array &test_feats, array &train_labels)
     return train_labels(idx.as(f32)).T();
 }
 
-EXTERNC af_knn1(SEXP trainFeats, SEXP testFeats, SEXP trainLabels)
+EXTERNC afr_knn1(SEXP trainFeats, SEXP testFeats, SEXP trainLabels)
 {
     try {
         array *train_feats  = getPtr(trainFeats);
