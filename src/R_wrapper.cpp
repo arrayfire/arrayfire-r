@@ -1,39 +1,33 @@
 #include <stdio.h>
 #include "R_wrapper.h"
-using namespace af;
 
 static void afr_destroy(SEXP A)
 {
-    try {
-        array *a = getPtr(A);
-        if (a != NULL) delete a;
-        return;
-    } catch(af::exception &ae) {
+    af_array a = getPtr(A);
+    if (a != 0) {
+        af_release_array(a);
     }
 }
 
-SEXP getSEXP(array *ptr)
+SEXP getSEXP(af_array arr)
 {
-    SEXP res = R_MakeExternalPtr(ptr, R_NilValue, R_NilValue);
+    SEXP res = R_MakeExternalPtr(arr, R_NilValue, R_NilValue);
     R_RegisterCFinalizerEx(res, afr_destroy, TRUE);
     return res;
 }
 
-array *getPtr(SEXP S)
+af_array getPtr(SEXP S)
 {
-    array *ptr = (array *)(R_ExternalPtrAddr(S));
-    return ptr;
+    return (af_array)(R_ExternalPtrAddr(S));
 }
 
-dim4 getDims(SEXP _dims)
+void getDims(unsigned *ndims,
+             dim_t dims[4],
+             SEXP _dims)
 {
-    int d[4] = {1,1,1,1};
-    int ndims = length(_dims);
+    *ndims = length(_dims);
 
-    for (int i = 0; i < ndims; i++) {
-        d[i] = *(IntPtr(_dims, i));
+    for (int i = 0; i < *ndims; i++) {
+        dims[i] = *(IntPtr(_dims, i));
     }
-
-    return dim4(d[0], d[1], d[2], d[3]);
 }
-

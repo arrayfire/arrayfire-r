@@ -1,280 +1,98 @@
 #include <stdio.h>
 #include "R_wrapper.h"
-using namespace af;
 
-EXTERNC afr_get_nnss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+static af_err index_s(af_index_t *res, SEXP IDX)
 {
-    // i is numeric array
-    // j is numeric array
-    // k,l are spans and can be ignored
-    int *I = IntPtr(i, 0);
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
+    res->isSeq = true;
+    res->isBatch =false;
+    res->idx.seq = af_span;
+    return AF_SUCCESS;
+}
 
-    if (length(i) == 1 && length(j) == 1) {
-        *res = (*X)(*I-1, *J-1);
-    } else if (length(i) == 1) {
-        array jj = array(length(j), J).as(f32);
-        *res = (*X)(*I-1, jj-1);
-    } else if (length(j) == 1) {
-        array ii = array(length(i), I).as(f32);
-        *res = (*X)(ii-1, *J-1);
-    }else {
-        array ii = array(length(i), I).as(f32);
-        array jj = array(length(j), J).as(f32);
-        *res = (*X)(ii-1, jj-1);
+static af_err index_n(af_index_t *res, SEXP IDX)
+{
+    int *idx = IntPtr(IDX, 0);
+    bool is_seq = true;
+    int num = length(IDX);
+    int df = 1;
+
+    if (num > 1) {
+        // Check if index is a sequence
+        df = idx[1] - idx[0];
+        for (int i = 2; is_seq && i < num; i++) {
+            is_seq &= (df == (idx[i] - idx[i - 1]));
+        }
     }
 
-    return getSEXP(res);
-}
+    res->isSeq = is_seq;
+    res->isBatch = false;
 
-EXTERNC afr_get_aass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j is arrayfire array
-    // k,l are spans and can be ignored
-    array *I = getPtr(i);
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = (*X)((*I).as(f32)-1, (*J).as(f32)-1);
-    return getSEXP(res);
-}
-
-EXTERNC afr_get_anss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j is numeric array
-    // k,l are spans and can be ignored
-    array *I = getPtr(i);
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
-
-    if (length(j) == 1) {
-        *res = (*X)((*I).as(f32)-1, *J-1);
+    if (is_seq) {
+        if (num == 1) {
+            af_seq s = {0, *idx - 1, 1};
+            res->idx.seq = s;
+        } else {
+            af_seq s = {0, *idx - 1, 1};
+            res->idx.seq = s;
+        }
     } else {
-        array jj = array(length(j), J).as(f32);
-        *res = (*X)((*I).as(f32)-1, jj-1);
+        dim_t d = (dim_t)(num);
+        return af_create_array(&res->idx.arr, (void *)idx, 1, &d, s32);
     }
 
-    return getSEXP(res);
+    return AF_SUCCESS;
 }
 
-EXTERNC afr_get_nass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
+static af_err index_a(af_index_t *res, SEXP IDX)
 {
-    // i is numeric array
-    // j is arrayfire array
-    // k,l are spans and can be ignored
-    int *I = IntPtr(i, 0);
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
+    res->isSeq = false;
+    res->isBatch = false;
+    return af_retain_array(&res->idx.arr, getPtr(IDX));
+}
 
-    if (length(i) == 1) {
-        *res = (*X)((*I)-1, (*J).as(f32)-1);
-    } else {
-        array ii = array(length(i), I).as(f32);
-        *res = (*X)(ii-1, (*J).as(f32)-1);
+static void indices_release(unsigned num, af_index_t *indices)
+{
+    for (int i = 0; i < num; i++) {
+        if (!indices[i].isSeq) {
+            af_release_array(indices[i].idx.arr);
+        }
     }
-
-    return getSEXP(res);
 }
 
-EXTERNC afr_get_sass(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // j is arrayfire array
-    // i, k,l are spans and can be ignored
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = (*X)(span, (*J).as(f32)-1);
-    return getSEXP(res);
-}
+#define INDEX(F,S)                                              \
+    EXTERNC afr_get_##F##S##ss(SEXP x, SEXP i, SEXP j)          \
+    {                                                           \
+        af_index_t indices[2];                                  \
+        AF_CHECK(index_##F(indices + 0, i));                    \
+        AF_CHECK(index_##S(indices + 1, j));                    \
+                                                                \
+        af_array res = 0;                                       \
+        AF_CHECK(af_index_gen(&res, getPtr(x), 2, indices));    \
+                                                                \
+        indices_release(2, indices);                            \
+                                                                \
+        return getSEXP(res);                                    \
+    }                                                           \
+    EXTERNC afr_set_##F##S##ss(SEXP x, SEXP v, SEXP i, SEXP j)  \
+    {                                                           \
+        af_index_t indices[2];                                  \
+        AF_CHECK(index_##F(indices + 0, i));                    \
+        AF_CHECK(index_##S(indices + 1, j));                    \
+                                                                \
+        af_array res = 0;                                       \
+        AF_CHECK(af_assign_gen(&res, getPtr(x), 2, indices,     \
+                               getPtr(v)));                     \
+                                                                \
+        indices_release(2, indices);                            \
+                                                                \
+        return getSEXP(res);                                    \
+    }                                                           \
 
-EXTERNC afr_get_asss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j, k,l are spans and can be ignored
-    array *I = getPtr(i);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = (*X)((*I).as(f32)-1, span);
-    return getSEXP(res);
-}
-
-
-EXTERNC afr_get_snss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // j is numeric array
-    // i, k,l are spans and can be ignored
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
-
-    if (length(j) == 1) {
-        *res = (*X)(span, *J-1);
-    } else {
-        array jj = array(length(j), J).as(f32) - 1;
-        *res = (*X)(span, jj-1);
-    }
-    return getSEXP(res);
-}
-
-EXTERNC afr_get_nsss(SEXP x, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is numeric array
-    // j, k,l are spans and can be ignored
-    int *I = IntPtr(i,0);
-    array *X = getPtr(x);
-    array *res = new array();
-
-    if (length(i) == 1) {
-        *res = (*X)(span, *I-1);
-    } else {
-        array ii = array(length(i), I).as(f32) - 1;
-        *res = (*X)(span, ii-1);
-    }
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_nnss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is numeric array
-    // j is numeric array
-    // k,l are spans and can be ignored
-    int *I = IntPtr(i, 0);
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-
-    if (length(i) == 1 && length(j) == 1) {
-        (*res)(*I-1, *J-1) = *getPtr(v);
-    } else if (length(i) == 1) {
-        array jj = array(length(j), J).as(f32);
-        (*res)(*I-1, jj-1) = *getPtr(v);
-    } else if (length(j) == 1) {
-        array ii = array(length(i), I).as(f32);
-        (*res)(ii-1, *J-1) = *getPtr(v);
-    }else {
-        array ii = array(length(i), I).as(f32);
-        array jj = array(length(j), J).as(f32);
-        (*res)(ii-1, jj-1) = *getPtr(v);
-    }
-
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_aass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j is arrayfire array
-    // k,l are spans and can be ignored
-    array *I = getPtr(i);
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    (*res)((*I).as(f32)-1, (*J).as(f32)-1) = *getPtr(v);
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_anss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j is numeric array
-    // k,l are spans and can be ignored
-    array *I = getPtr(i);
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    if (length(j) == 1) {
-        (*res)((*I).as(f32)-1, *J-1) = *getPtr(v);
-    } else {
-        array jj = array(length(j), J).as(f32);
-        (*res)((*I).as(f32)-1, jj-1) = *getPtr(v);
-    }
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_nass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is numeric array
-    // j is arrayfire array
-    // k,l are spans and can be ignored
-    int *I = IntPtr(i, 0);
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    if (length(i) == 1) {
-        (*res)((*I)-1, (*J).as(f32)-1) = *getPtr(v);
-    } else {
-        array ii = array(length(i), I).as(f32);
-        (*res)(ii-1, (*J).as(f32)-1) = *getPtr(v);
-    }
-
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_sass(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // j is arrayfire array
-    // i, k,l are spans and can be ignored
-    array *J = getPtr(j);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    (*res)(span, (*J).as(f32)-1) = *getPtr(v);
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_asss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is arrayfire array
-    // j, k,l are spans and can be ignored
-    array *I = getPtr(i);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    (*res)((*I).as(f32)-1, span) = *getPtr(v);
-    return getSEXP(res);
-}
-
-
-EXTERNC afr_set_snss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // j is numeric array
-    // i, k,l are spans and can be ignored
-    int *J = IntPtr(j, 0);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    if (length(j) == 1) {
-        (*res)(span, *J-1) = *getPtr(v);
-    } else {
-        array jj = array(length(j), J).as(f32) - 1;
-        (*res)(span, jj-1) = *getPtr(v);
-    }
-    return getSEXP(res);
-}
-
-EXTERNC afr_set_nsss(SEXP x, SEXP v, SEXP i, SEXP j, SEXP k, SEXP l)
-{
-    // i is numeric array
-    // j, k,l are spans and can be ignored
-    int *I = IntPtr(i,0);
-    array *X = getPtr(x);
-    array *res = new array();
-    *res = *X;
-    if (length(i) == 1) {
-        (*res)(span, *I-1) = *getPtr(v);
-    } else {
-        array ii = array(length(i), I).as(f32) - 1;
-        (*res)(span, ii-1) = *getPtr(v);
-    }
-    return getSEXP(res);
-}
+INDEX(n, n)
+INDEX(a, a)
+INDEX(a, n)
+INDEX(n, a)
+INDEX(s, a)
+INDEX(a, s)
+INDEX(s, n)
+INDEX(n, s)
