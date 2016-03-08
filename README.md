@@ -19,7 +19,7 @@ Please note that this project is still a work in progress and as such is not ava
 
 You can still build and use this project using the following instructions.
 
-- [Build instructions for Linux](https://github.com/arrayfire/arrayfire-r/wiki/Installation-instructions-for-Linx)
+- [Build instructions for Linux](https://github.com/arrayfire/arrayfire-r/wiki/Installation-instructions-for-Linux)
 
 ## Documentation
 - TODO
