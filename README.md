@@ -19,7 +19,7 @@ Please note that this project is still a work in progress and as such is not ava
 
 You can still build and use this project using the following instructions.
 
-- [Build instructions for Linux](https://github.com/arrayfire/arrayfire-r/wiki/Installation-instructions-for-Linx)
+- [Build instructions for Linux](https://github.com/arrayfire/arrayfire-r/wiki/Installation-instructions-for-Linux)
 
 ## Documentation
 - TODO
@@ -31,7 +31,7 @@ This repository is distributed under the BSD 3 clause license. Please check the 
 ## Acknowledgements
 
 The ArrayFire library is written by developers at [ArrayFire](http://arrayfire.com) LLC
-with [contributions from several individuals](https://github.com/arrayfire/arrayfire_python/graphs/contributors).
+with [contributions from several individuals](https://github.com/arrayfire/arrayfire-r/graphs/contributors).
 
 The developers at ArrayFire LLC have received partial financial support
 from several grants and institutions. Those that wish to receive public
