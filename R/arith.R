@@ -506,20 +506,6 @@ setMethod("floor", signature(x="afArray"),
               return (result)
           })
 
-## setMethod("trunc", signature(x="afArray"),
-##           function(x) {
-##               ret = .Call("afr_trunc", x@ptr)
-##               result <- createArray(ret)
-##               return (result)
-##           })
-
-## setMethod("sign", signature(x="afArray"),
-##           function(x) {
-##               ret = .Call("afr_sign", x@ptr)
-##               result <- createArray(ret)
-##               return (result)
-##           })
-
 ## Complex functions
 ####################
 
