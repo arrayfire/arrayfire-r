@@ -72,6 +72,8 @@ BINARY(le )
 BINARY(ge )
 BINARY(eq )
 BINARY(neq)
+BINARY(minof)
+BINARY(maxof)
 
 #undef BINARY
 

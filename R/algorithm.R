@@ -38,6 +38,7 @@ setGeneric("dimMin", function(x, dim) standardGeneric("dimMin"))
 setGeneric("dimMax", function(x, dim) standardGeneric("dimMax"))
 setGeneric("dimAny", function(x, dim) standardGeneric("dimAny"))
 setGeneric("dimAll", function(x, dim) standardGeneric("dimAll"))
+setGeneric("dimAccum", function(x, dim) standardGeneric("dimAccum"))
 
 setMethod("dimSum", signature(x="afArray", dim="numeric"),
           function(x, dim=1) {
@@ -72,4 +73,11 @@ setMethod("dimAll", signature(x="afArray", dim="numeric"),
               ret = .Call("afr_all_true", x@ptr, dim-1)
               result <- createArray(ret)
               return (result)
+          })
+
+setMethod("dimAccum", signature(x="afArray", dim="numeric"),
+          function(x, dim=1) {
+            ret = .Call("afr_accum", x@ptr, dim-1)
+            result <- createArray(ret)
+            return (result)
           })
