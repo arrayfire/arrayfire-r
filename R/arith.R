@@ -227,6 +227,8 @@ setMethod("%%", signature(e1="numeric", e2="afArray"), function(e1, e2) {
 ################################
 setGeneric("Cplx", function(real, imag) standardGeneric("Cplx"))
 setGeneric("hypot", function(x, y) standardGeneric("hypot"))
+setGeneric("minof", function(x, y) standardGeneric("minof"))
+setGeneric("maxof", function(x, y) standardGeneric("maxof"))
 
 setMethod("Cplx", signature("afArray", "afArray"),
           function(real, imag) {
@@ -289,6 +291,48 @@ setMethod("hypot", signature("numeric", "afArray"),
               ret = .Call("afr_hypot_na", x, y@ptr, FALSE)
               result <- createArray(ret)
               return (result)
+          })
+
+setMethod("minof", signature("afArray", "afArray"),
+          function(x, y) {
+            ret = .Call("afr_minof_aa", x@ptr, y@ptr, FALSE)
+            result <- createArray(ret)
+            return (result)
+          })
+
+setMethod("minof", signature("afArray", "numeric"),
+          function(x, y) {
+            ret = .Call("afr_minof_an", x@ptr, y, FALSE)
+            result <- createArray(ret)
+            return (result)
+          })
+
+setMethod("minof", signature("numeric", "afArray"),
+          function(x, y) {
+            ret = .Call("afr_minof_na", x, y@ptr, FALSE)
+            result <- createArray(ret)
+            return (result)
+          })
+
+setMethod("maxof", signature("afArray", "afArray"),
+          function(x, y) {
+            ret = .Call("afr_maxof_aa", x@ptr, y@ptr, FALSE)
+            result <- createArray(ret)
+            return (result)
+          })
+
+setMethod("maxof", signature("afArray", "numeric"),
+          function(x, y) {
+            ret = .Call("afr_maxof_an", x@ptr, y, FALSE)
+            result <- createArray(ret)
+            return (result)
+          })
+
+setMethod("maxof", signature("numeric", "afArray"),
+          function(x, y) {
+            ret = .Call("afr_maxof_na", x, y@ptr, FALSE)
+            result <- createArray(ret)
+            return (result)
           })
 
 ## Trigonometric functions
